@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { useTicTacToe } from "./hooks/useTicTacToe";
 import { GameMode } from "./utils/gameLogic";
 
@@ -90,7 +88,7 @@ export default function TicTacToePage() {
         <div className="flex justify-center">
           <button
             onClick={reset}
-            className="group flex items-center gap-2 px-8 py-3 bg-white border-2 border-slate-200 text-slate-600 font-bold rounded-2xl hover:border-indigo-500 hover:text-indigo-500 transition-all active:scale-95 shadow-sm"
+            className="group flex items-center gap-2 px-8 py-3 bg-white border-2 border-slate-200 text-slate-600 font-bold rounded-2xl hover:border-indigo-500 hover:text-indigo-500 hover:cursor-pointer transition-all active:scale-95 shadow-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +111,7 @@ export default function TicTacToePage() {
 
       {/* Footer Info */}
       <footer className="mt-12 text-slate-400 text-sm">
-        Built with Next.js & TypeScript
+        Built with Next.js & TypeScript by wtfychxx
       </footer>
     </div>
   );
