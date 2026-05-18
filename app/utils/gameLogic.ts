@@ -60,6 +60,25 @@ function minimax(
   }
 }
 
+// Fungsi pembantu untuk mencari langkah kemenangan atau blokir
+function findWinningOrBlockingMove(
+  squares: Player[],
+  playerToCheck: "X" | "O",
+): number | null {
+  for (const [a, b, c] of WINNING_COMBINATIONS) {
+    const vals = [squares[a], squares[b], squares[c]];
+    // Cari kombinasi yang sudah terisi 2 oleh pemain yang dicek dan 1 masih kosong
+    const count = vals.filter((val) => val === playerToCheck).length;
+    const nullIndex = vals.indexOf(null);
+
+    if (count === 2 && nullIndex !== -1) {
+      // Kembalikan indeks papan yang sebenarnya (0-8)
+      return [a, b, c][nullIndex];
+    }
+  }
+  return null;
+}
+
 export function getBotMove(squares: Player[], mode: GameMode): number {
   const moves = getAvailableMoves(squares);
 
@@ -67,7 +86,18 @@ export function getBotMove(squares: Player[], mode: GameMode): number {
     return moves[Math.floor(Math.random() * moves.length)];
   }
 
-  if (mode === "MEDIUM" && Math.random() > 0.5) {
+  // 2. MEDIUM MODE: Pintar tapi masih bisa teledor jika tidak ada ancaman langsung
+  if (mode === "MEDIUM") {
+    // A. Coba cari langkah untuk MENANG langsung
+    const winMove = findWinningOrBlockingMove(squares, "O");
+    if (winMove !== null) return winMove;
+
+    // B. Coba cari langkah untuk BLOKIR lawan
+    const blockMove = findWinningOrBlockingMove(squares, "X");
+    if (blockMove !== null) return blockMove;
+
+    // C. Jika aman, lakukan kombinasi acak cerdas (misal: ambil tengah atau acak)
+    // if (squares[4] === null) return 4; // Ambil tengah jika kosong karena ini posisi strategis
     return moves[Math.floor(Math.random() * moves.length)];
   }
 
